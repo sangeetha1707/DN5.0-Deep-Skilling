@@ -1,0 +1,62 @@
+1. angular.json
+   Purpose: This is the main workspace configuration file for the Angular CLI.
+   It controls how the application is built, served, and tested.
+   Under architect > build > configurations > production, there is a "budgets"
+   section with two important thresholds:
+   - maximumWarning: Angular will show a warning if the bundle exceeds this size
+   - maximumError: The build will fail if the bundle exceeds this size
+   These thresholds help keep the application lightweight and performant.
+
+2. tsconfig.json
+   Purpose: This is the base TypeScript configuration file for the entire project.
+   TypeScript is a superset of JavaScript that adds static type checking.
+   This file defines compiler options that apply to all TypeScript files in
+   the project. All other tsconfig files inherit settings from this file.
+
+3. tsconfig.app.json
+   Purpose: This is the TypeScript configuration specifically for the application
+   source code. It extends tsconfig.json but only includes files required to
+   compile and run the application, excluding test files.
+
+4. package.json
+   Purpose: This file manages the project's dependencies and scripts.
+   It lists all required libraries with their versions. Running "npm install"
+   reads this file and downloads all listed packages into node_modules.
+   It also contains useful scripts such as "ng serve" and "ng build".
+
+5. src/main.ts
+   Purpose: This is the entry point of the Angular application.
+   It is the first file executed when the app starts. It bootstraps the
+   root App component using the configuration defined in app.config.ts,
+   which effectively launches the entire application.
+
+6. src/app/app.config.ts
+   Purpose: This file is the modern replacement for the traditional app.module.ts
+   (used in Angular versions before v17). It registers application-wide providers
+   such as routing and HttpClient. Any service or configuration that needs to be
+   available globally across the app is set up here.
+
+7. src/app/app.ts
+   Purpose: This is the root component of the application.
+   It is the top-level component that acts as the parent container for all
+   other components. It contains the <router-outlet> where different page
+   components are rendered based on the current route.
+
+8. src/index.html
+   Purpose: This is the single HTML file of the entire application.
+   Angular is a Single Page Application (SPA) framework, meaning there is
+   only one HTML page. This file contains the <app-root> tag where Angular
+   injects and renders the entire application dynamically.
+
+   ng build output (dist/ folder):
+   Running "ng build" compiles the Angular application into static files
+   that can be deployed to any web server. The key files generated are:
+   - index.html: The main HTML file of the compiled app
+   - favicon.ico: The browser tab icon
+   - main.js (or similar): This is the most important file - it contains
+     ALL the compiled TypeScript/Angular code converted to plain JavaScript
+   - styles.css: The compiled global styles
+
+   The file that contains the compiled application code is "main.js" (or
+   chunk-*.js files) - this is where all our Angular components, services,
+   and logic end up after compilation.

@@ -1,0 +1,32 @@
+<div class="home-container">
+  <h1>{{ portalName }}</h1>
+  <p>Your one-stop portal to manage courses, track grades and view your profile.</p>
+
+  <!-- Property Binding + Event Binding -->
+  <button [disabled]="!isPortalActive" (click)="onEnrollClick()">
+    Enroll Now
+  </button>
+
+  <!-- Show message after button click -->
+  <p *ngIf="message">{{ message }}</p>
+
+  <!-- Two-way binding with ngModel -->
+  <input [(ngModel)]="searchTerm" placeholder="Search courses..." />
+  <p>Searching for: {{ searchTerm }}</p>
+
+  <!-- Stats Row -->
+  <div class="stats-row">
+    <div class="stat-card">
+      <h3>Courses Available</h3>
+      <p>12</p>
+    </div>
+    <div class="stat-card">
+      <h3>Enrolled</h3>
+      <p>3</p>
+    </div>
+    <div class="stat-card">
+      <h3>GPA</h3>
+      <p>3.8</p>
+    </div>
+  </div>
+</div>

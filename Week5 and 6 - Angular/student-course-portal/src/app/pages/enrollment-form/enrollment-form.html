@@ -1,0 +1,68 @@
+<div class="enrollment-container">
+  <h2>Student Enrollment Request</h2>
+
+  <div *ngIf="submitted" class="success-message">
+    Enrollment request submitted successfully!
+  </div>
+
+  <form #enrollForm="ngForm" (ngSubmit)="onSubmit(enrollForm)">
+
+    <!-- Student Name -->
+    <div class="form-group">
+      <label>Student Name</label>
+      <input type="text" name="studentName" [(ngModel)]="studentName"
+        #nameCtrl="ngModel" required minlength="3" />
+      <span *ngIf="nameCtrl.touched && nameCtrl.errors?.['required']">
+        Name is required.
+      </span>
+      <span *ngIf="nameCtrl.touched && nameCtrl.errors?.['minlength']">
+        Name must be at least 3 characters.
+      </span>
+    </div>
+
+    <!-- Student Email -->
+    <div class="form-group">
+      <label>Student Email</label>
+      <input type="email" name="studentEmail" [(ngModel)]="studentEmail"
+        #emailCtrl="ngModel" required email />
+      <span *ngIf="emailCtrl.touched && emailCtrl.errors?.['required']">
+        Email is required.
+      </span>
+      <span *ngIf="emailCtrl.touched && emailCtrl.errors?.['email']">
+        Enter a valid email address.
+      </span>
+    </div>
+
+    <!-- Course ID -->
+    <div class="form-group">
+      <label>Course ID</label>
+      <input type="number" name="courseId" [(ngModel)]="courseId"
+        #courseCtrl="ngModel" required />
+      <span *ngIf="courseCtrl.touched && courseCtrl.errors?.['required']">
+        Course ID is required.
+      </span>
+    </div>
+
+    <!-- Preferred Semester -->
+    <div class="form-group">
+      <label>Preferred Semester</label>
+      <select name="preferredSemester" [(ngModel)]="preferredSemester" required>
+        <option value="Odd">Odd</option>
+        <option value="Even">Even</option>
+      </select>
+    </div>
+
+    <!-- Agree to Terms -->
+    <div class="form-group">
+      <label>
+        <input type="checkbox" name="agreeToTerms" [(ngModel)]="agreeToTerms" required />
+        I agree to the terms and conditions
+      </label>
+    </div>
+
+    <!-- Buttons -->
+    <button type="submit" [disabled]="enrollForm.invalid">Submit</button>
+    <button type="button" (click)="onReset(enrollForm)">Reset</button>
+
+  </form>
+</div>
