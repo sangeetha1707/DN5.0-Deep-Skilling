@@ -1,1 +1,19 @@
-<p>student-profile works!</p>
+<div class="profile-container">
+  <h2>Student Profile</h2>
+
+  <app-notification></app-notification>
+
+  <h3>Enrolled Courses</h3>
+
+  <div *ngIf="enrolledCourses.length === 0">
+    <p>No courses enrolled yet.</p>
+  </div>
+
+  <div *ngFor="let course of enrolledCourses" class="enrolled-course">
+    <p><strong>{{ course.name }}</strong></p>
+    <p>Code: {{ course.code }}</p>
+    <p>Credits: {{ course.credits }}</p>
+    <p>Status: {{ course.gradeStatus }}</p>
+    <hr>
+  </div>
+</div>
