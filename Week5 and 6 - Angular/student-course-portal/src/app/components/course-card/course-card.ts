@@ -43,10 +43,10 @@ export class CourseCard implements OnChanges {
     console.log('Current value:', changes['course']?.currentValue);
   }
 
-  onEnroll() {
-    this.enrollmentService.enroll(this.course.id);
-    this.enrollRequested.emit(this.course.id);
-  }
+onEnroll() {
+  this.enrollmentService.enroll(this.course);
+  this.enrollRequested.emit(this.course.id);
+}
 
   onUnenroll() {
     this.enrollmentService.unenroll(this.course.id);

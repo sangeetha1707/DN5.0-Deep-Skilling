@@ -1,2 +1,7 @@
 <app-header></app-header>
+
+<div *ngIf="isLoading$ | async" style="text-align: center; padding: 20px;">
+  <p>Loading...</p>
+</div>
+
 <router-outlet></router-outlet>

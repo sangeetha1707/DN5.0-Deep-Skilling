@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { CourseService } from '../../services/course';
@@ -15,11 +15,18 @@ export class CourseDetail implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private courseService: CourseService
+    private courseService: CourseService,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
     const id = Number(this.route.snapshot.paramMap.get('id'));
-    this.course = this.courseService.getCourseById(id);
+    this.courseService.getCourseById(id).subscribe({
+      next: course => {
+        this.course = course;
+        this.cdr.detectChanges();
+      },
+      error: err => console.error(err)
+    });
   }
 }

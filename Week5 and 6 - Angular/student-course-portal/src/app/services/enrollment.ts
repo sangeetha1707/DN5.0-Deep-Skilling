@@ -1,32 +1,27 @@
 import { Injectable } from '@angular/core';
-import { CourseService } from './course';
 import { Course } from '../models/course';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EnrollmentService {
-  private enrolledCourseIds: number[] = [];
+  private enrolledCourses: Course[] = [];
 
-  constructor(private courseService: CourseService) {}
-
-  enroll(courseId: number): void {
-    if (!this.isEnrolled(courseId)) {
-      this.enrolledCourseIds.push(courseId);
+  enroll(course: Course): void {
+    if (!this.isEnrolled(course.id)) {
+      this.enrolledCourses.push(course);
     }
   }
 
   unenroll(courseId: number): void {
-    this.enrolledCourseIds = this.enrolledCourseIds.filter(id => id !== courseId);
+    this.enrolledCourses = this.enrolledCourses.filter(c => c.id !== courseId);
   }
 
   isEnrolled(courseId: number): boolean {
-    return this.enrolledCourseIds.includes(courseId);
+    return this.enrolledCourses.some(c => c.id === courseId);
   }
 
   getEnrolledCourses(): Course[] {
-    return this.enrolledCourseIds
-      .map(id => this.courseService.getCourseById(id))
-      .filter(course => course !== undefined) as Course[];
+    return this.enrolledCourses;
   }
 }

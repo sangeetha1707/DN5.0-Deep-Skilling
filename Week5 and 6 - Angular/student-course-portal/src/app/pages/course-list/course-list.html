@@ -3,17 +3,22 @@
 
   <!-- Search with query param -->
   <div>
-    <input 
-      [(ngModel)]="searchTerm" 
-      placeholder="Search courses..." 
+    <input
+      [(ngModel)]="searchTerm"
+      placeholder="Search courses..."
       (input)="onSearch()" />
+  </div>
+
+  <!-- Error message -->
+  <div *ngIf="errorMessage" style="color: red;">
+    <p>{{ errorMessage }}</p>
   </div>
 
   <div *ngIf="isLoading">
     <p>Loading courses...</p>
   </div>
 
-  <div *ngIf="!isLoading">
+  <div *ngIf="!isLoading && !errorMessage">
     <div *ngIf="courses.length > 0; else noCourses">
       <app-course-card
         *ngFor="let course of courses; let i = index; trackBy: trackByCourseId"

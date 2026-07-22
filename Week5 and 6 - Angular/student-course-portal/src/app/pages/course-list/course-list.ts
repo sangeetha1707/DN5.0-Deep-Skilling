@@ -2,6 +2,8 @@ import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { of } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 import { CourseCard } from '../../components/course-card/course-card';
 import { CourseService } from '../../services/course';
 import { Course } from '../../models/course';
@@ -15,9 +17,10 @@ import { Course } from '../../models/course';
 export class CourseList implements OnInit, OnDestroy {
   selectedCourseId: number | null = null;
   isLoading = true;
-  private timer: any;
   courses: Course[] = [];
+  errorMessage = '';
   searchTerm = '';
+  private timer: any;
 
   constructor(
     private courseService: CourseService,
@@ -29,11 +32,18 @@ export class CourseList implements OnInit, OnDestroy {
   ngOnInit() {
     this.searchTerm = this.route.snapshot.queryParamMap.get('search') || '';
     this.isLoading = true;
-    this.timer = setTimeout(() => {
-      this.courses = this.courseService.getCourses();
-      this.isLoading = false;
-      this.cdr.detectChanges();
-    }, 1500);
+    this.courseService.getCourses().subscribe({
+      next: courses => {
+        this.courses = courses;
+        this.isLoading = false;
+        this.cdr.detectChanges();
+      },
+      error: err => {
+        this.errorMessage = err.message;
+        this.isLoading = false;
+        this.cdr.detectChanges();
+      }
+    });
   }
 
   ngOnDestroy() {
@@ -50,10 +60,21 @@ export class CourseList implements OnInit, OnDestroy {
   }
 
   onCardClick(courseId: number) {
-    this.router.navigate(['courses', courseId]);
-  }
+  this.loadStudentsForCourse(courseId);
+  this.router.navigate(['courses', courseId]);
+}
 
   onSearch() {
     this.router.navigate(['courses'], { queryParams: { search: this.searchTerm } });
   }
+  // switchMap cancels the previous inner Observable when a new courseId arrives
+// This prevents out-of-order responses when user clicks courses quickly
+loadStudentsForCourse(courseId: number) {
+  of(courseId).pipe(
+    switchMap(id => this.courseService.getStudentsByCourse(id))
+  ).subscribe({
+    next: students => console.log('Students for course:', students),
+    error: err => console.error(err)
+  });
+}
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { CourseService } from '../../services/course';
@@ -19,19 +19,23 @@ export class Home implements OnInit, OnDestroy {
   /*
    * Difference between [property] and [(ngModel)]:
    * [property] = One-way binding. Data flows only FROM component TO the DOM.
-   *              Example: [disabled]="!isPortalActive" — component controls the button.
-   *              The DOM cannot update the component back.
-   *
    * [(ngModel)] = Two-way binding. Data flows BOTH ways between component and DOM.
-   *              Example: [(ngModel)]="searchTerm" — when user types in the input,
-   *              the component's searchTerm updates automatically and vice versa.
    */
 
-  constructor(private courseService: CourseService) {}
+  constructor(
+    private courseService: CourseService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit() {
-    this.coursesCount = this.courseService.getCourses().length;
-    console.log('HomeComponent initialised — courses loaded');
+    this.courseService.getCourses().subscribe({
+      next: courses => {
+        this.coursesCount = courses.length;
+        this.cdr.detectChanges();
+        console.log('HomeComponent initialised — courses loaded');
+      },
+      error: err => console.error(err)
+    });
   }
 
   ngOnDestroy() {
