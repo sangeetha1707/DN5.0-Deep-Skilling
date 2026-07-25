@@ -22,12 +22,12 @@
   </div>
 
   <br>
-  <button (click)="toggleExpand()">
+  <button (click)="toggleExpand(); $event.stopPropagation()">
     {{ isExpanded ? 'Hide Details' : 'Show Details' }}
   </button>
 
   <br><br>
-  <button (click)="isEnrolled ? onUnenroll() : onEnroll()">
+  <button (click)="toggleEnroll(); $event.stopPropagation()">
     {{ isEnrolled ? 'Unenroll' : 'Enroll' }}
   </button>
 

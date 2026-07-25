@@ -10,18 +10,20 @@
   </div>
 
   <!-- Error message -->
-  <div *ngIf="errorMessage" style="color: red;">
-    <p>{{ errorMessage }}</p>
+  <div *ngIf="errorMessage$ | async as error" style="color: red;">
+    <p>{{ error }}</p>
   </div>
 
-  <div *ngIf="isLoading">
+  <!-- Loading -->
+  <div *ngIf="isLoading$ | async">
     <p>Loading courses...</p>
   </div>
 
-  <div *ngIf="!isLoading && !errorMessage">
-    <div *ngIf="courses.length > 0; else noCourses">
+  <!-- Course list -->
+  <div *ngIf="!(isLoading$ | async)">
+    <div *ngIf="(courses$ | async)?.length ?? 0 > 0; else noCourses">
       <app-course-card
-        *ngFor="let course of courses; let i = index; trackBy: trackByCourseId"
+        *ngFor="let course of courses$ | async; let i = index; trackBy: trackByCourseId"
         [course]="course"
         (enrollRequested)="onEnroll($event)"
         (click)="onCardClick(course.id)"
