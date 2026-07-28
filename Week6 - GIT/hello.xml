@@ -1,3 +1,4 @@
 <greeting>
-<message> Hello from main branch</message>
+  <message>Hello from main branch, merged with GitWork</message>
 </greeting>
+<!-- updated in GitWork -->
